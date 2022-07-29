@@ -1,5 +1,3 @@
-
-
 export function StoreItem() {
     return (
         <li>

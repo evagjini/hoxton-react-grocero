@@ -1,3 +1,4 @@
+
 export function Total() {
     return (
         <div className="total-section" >
