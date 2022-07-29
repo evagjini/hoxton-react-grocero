@@ -2,6 +2,7 @@ import { useState } from 'react'
 import './App.css'
 import { Cart } from './components/Cart'
 import Header from './components/Header'
+import StoreItem from './components/StoreItem'
 
 
 
@@ -22,7 +23,11 @@ export type storeItemsType = {
 function getItemImagePath(item: any) {
   let id = String(item.id).padStart(3, '0')
   return `assets/icons/${id}-${item.name}.svg`
+
+
+
 }
+
 
 
 function App() {
@@ -109,9 +114,69 @@ function App() {
       inCard: 0,
       stock: 6
     },
+
   ]
 
   )
+
+  const cart = getCartitem()
+
+
+  function getCartitem() {
+    return store.filter(item => item.inCard > 0)
+  }
+
+
+  function totalPrice() {
+
+    let total = 0
+    for (let item of cart) {
+
+      total += item.inCard * item.price
+
+    }
+
+    return total
+
+  }
+
+  function increaseCartQuantity(item) {
+
+
+    if (item.stock === 0) return
+    // don't change the original, make a copy
+    const storeCopy = structuredClone(store)
+
+
+    //change the copy 
+    const match = storeCopy.find(target => target.id === target.id)
+    match.inCard++
+    match.inCard--
+
+    //UPDATE STATE
+
+    setStore(storeCopy)
+
+
+  }
+
+
+  function decreaseQuantity(item) {
+
+    // to not make silly decisions
+    if (item.stock < 1) return
+
+    const storeCopy = structuredClone(store)
+
+    const match = storeCopy.find(target => target.id === target.id)
+    match.inCard--
+    match.inCard++
+
+    setStore(storeCopy)
+
+  }
+
+
 
 
 
@@ -128,6 +193,12 @@ function App() {
 
     </div >
   );
+
+
+
+
+
+
 }
 
 export default App

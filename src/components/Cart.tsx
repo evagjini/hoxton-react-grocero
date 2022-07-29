@@ -7,6 +7,7 @@ export function Cart() {
             <h2>Your Cart</h2>
 
             <div className="cart--item-list-container">
+
                 <CartList />
             </div>
 

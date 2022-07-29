@@ -7,7 +7,7 @@ export function Total() {
             </div>
 
             <div>
-                <span className="total-number">£0.00</span>
+                <span className="total-number">£{getTotalPrice().toFixed(2)}</span>
             </div>
         </div >
     )

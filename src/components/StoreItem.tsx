@@ -1,11 +1,18 @@
+import { CartItem } from "./CartItem"
+
 export function StoreItem() {
     return (
         <li>
             <div className="store--item-icon">
-                <img src="assets/icons/001-beetroot.svg"
-                    alt="beetroot" />
+                <img src={getItemImagePath(item)} />
             </div>
-            <button>Add to cart</button>
+            <button
+                onClick={function () {
+                    increaseQuantity(item)
+                }}
+
+            >
+                Add to cart {(item.stock)}</button>
         </li>
     )
 }
