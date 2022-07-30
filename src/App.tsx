@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import './App.css'
-import { Cart } from './components/Cart'
-import Header from './components/Header'
-import StoreItem from './components/StoreItem'
+import Store from './components/Store'
+import Cart from './components/Cart'
+
+
 
 
 
@@ -20,14 +21,17 @@ export type storeItemsType = {
 // action: generates a path for this item's image
 // output: the path
 
-function getItemImagePath(item: any) {
-  let id = String(item.id).padStart(3, '0')
-  return `assets/icons/${id}-${item.name}.svg`
 
 
+export type StoreItemType = {
+  id: number;
+  name: string;
+  price: number;
+  stock: number;
+  inCard: number;
 
 }
-
+export type StoreType = StoreItemType[]
 
 
 function App() {
@@ -78,7 +82,7 @@ function App() {
       id: 6,
       name: "bananas",
       price: 1.2,
-      inCard: 0,
+      inCard: 1,
       stock: 2
 
     },
@@ -115,19 +119,17 @@ function App() {
       stock: 6
     },
 
-  ]
+  ])
 
-  )
 
   const cart = getCartitem()
-
 
   function getCartitem() {
     return store.filter(item => item.inCard > 0)
   }
 
 
-  function totalPrice() {
+  function getTotalPrice() {
 
     let total = 0
     for (let item of cart) {
@@ -136,20 +138,19 @@ function App() {
 
     }
 
-    return total
+    return `£${total.toFixed(2)}`
 
   }
+  const total = getTotalPrice()
 
-  function increaseCartQuantity(item) {
-
-
+  function increaseCartQuantity(item: StoreItemType) {
     if (item.stock === 0) return
     // don't change the original, make a copy
-    const storeCopy = structuredClone(store)
+    const storeCopy: StoreType = structuredClone(store)
 
 
     //change the copy 
-    const match = storeCopy.find(target => target.id === target.id)
+    const match = storeCopy.find(target => target.id === target.id)!
     match.inCard++
     match.inCard--
 
@@ -161,14 +162,14 @@ function App() {
   }
 
 
-  function decreaseQuantity(item) {
+  function decreaseQuantity(item: StoreItemType) {
 
     // to not make silly decisions
-    if (item.stock < 1) return
+    if (item.inCard < 1) return
 
-    const storeCopy = structuredClone(store)
+    const storeCopy: StoreType = structuredClone(store)
 
-    const match = storeCopy.find(target => target.id === target.id)
+    const match = storeCopy.find(target => target.id === target.id)!
     match.inCard--
     match.inCard++
 
@@ -184,8 +185,26 @@ function App() {
     <div className="App">
 
 
-      <Header />
-      <Cart />
+
+      <Store
+        store={store}
+        increaseCartQuantity={increaseCartQuantity}
+
+
+
+      />
+
+
+
+      <Cart
+
+        cart={cart}
+        decreaseQuantity={decreaseQuantity}
+        increaseCartQuantity={increaseCartQuantity}
+        total={total}
+      />
+
+
 
 
 
@@ -200,5 +219,7 @@ function App() {
 
 
 }
+
+
 
 export default App
